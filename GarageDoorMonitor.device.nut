@@ -21,11 +21,12 @@
 // Constants
 //--------------------------------------------------------------------------------------------------------
 
-const OPEN_STATE    = "Open";
-const OPENING_STATE = "Opening";
-const CLOSED_STATE  = "Closed";
-const CLOSING_STATE = "Closing";
-const PARTIAL_STATE = "Partial";
+const OPEN_STATE    = "Open"
+const OPENING_STATE = "Opening"
+const CLOSED_STATE  = "Closed"
+const CLOSING_STATE = "Closing"
+const PARTIAL_STATE = "Partial"
+const UNKNOWN_STATE = "Unknown"
 const DOOR1         = "Left"
 const DOOR2         = "Right"
 
@@ -64,35 +65,92 @@ function pulseRelay(relay)
 
 door1Open <- Button(g1OpenSwitch,DIGITAL_IN_PULLUP)
 .onPress(function() {
-    agent.send("doorstatus",{"door":DOOR1,"status":OPEN_STATE})
+    imp.sleep(0.1)
+    if (g1OpenSwitch.read() == 0) {
+        server.log(DOOR1+" changed to OPEN");
+        agent.send("doorstatus",{"door":DOOR1,"status":OPEN_STATE})
+    } else {
+        server.log(DOOR1+" OPEN bounce");
+        agent.send("doorstatus",{"door":DOOR1,"status":UNKNOWN_STATE});
+    }
 })
 .onRelease(function() {
-    agent.send("doorstatus",{"door":DOOR1,"status":CLOSING_STATE});
+    imp.sleep(0.1)
+    if (g1OpenSwitch.read() == 1) {
+        server.log(DOOR1+" changed to CLOSING");
+        agent.send("doorstatus",{"door":DOOR1,"status":CLOSING_STATE});
+    } else {
+        server.log(DOOR1+" CLOSING bounce");
+        agent.send("doorstatus",{"door":DOOR1,"status":UNKNOWN_STATE});
+    }
 });
 
 door1Close <- Button(g1ClosedSwitch,DIGITAL_IN_PULLUP)
 .onPress(function() {
-    agent.send("doorstatus",{"door":DOOR1,"status":CLOSED_STATE});
+    imp.sleep(0.1)
+    if (g1ClosedSwitch.read() == 0) {
+        server.log(DOOR1+" changed to CLOSED");
+        agent.send("doorstatus",{"door":DOOR1,"status":CLOSED_STATE});
+    } else {
+        server.log(DOOR1+" CLOSED bounce");
+        agent.send("doorstatus",{"door":DOOR1,"status":UNKNOWN_STATE});
+    }
 })
 .onRelease(function() {
-    agent.send("doorstatus",{"door":DOOR1,"status":OPENING_STATE});
+    imp.sleep(0.1)
+    if (g1ClosedSwitch.read() == 1) {
+        server.log(DOOR1+" changed to OPENING");
+        agent.send("doorstatus",{"door":DOOR1,"status":OPENING_STATE});
+    } else {
+        server.log(DOOR1+" OPENING bounce");
+        agent.send("doorstatus",{"door":DOOR1,"status":UNKNOWN_STATE});
+    }
 });
 
 door2Open <- Button(g2OpenSwitch,DIGITAL_IN_PULLUP)
 .onPress(function() {
-    agent.send("doorstatus",{"door":DOOR2,"status":OPEN_STATE})
+    imp.sleep(0.1)
+    if (g2OpenSwitch.read() == 0) {
+        server.log(DOOR2+" changed to OPEN");
+        agent.send("doorstatus",{"door":DOOR2,"status":OPEN_STATE})
+    } else {
+        server.log(DOOR2+" OPEN bounce");
+        agent.send("doorstatus",{"door":DOOR2,"status":UNKNOWN_STATE});
+    }
 })
 .onRelease(function() {
-    agent.send("doorstatus",{"door":DOOR2,"status":CLOSING_STATE});
+    imp.sleep(0.1)
+    if (g2OpenSwitch.read() == 1) {
+        server.log(DOOR2+" changed to CLOSING");
+        agent.send("doorstatus",{"door":DOOR2,"status":CLOSING_STATE});
+    } else {
+        server.log(DOOR2+" CLOSING bounce");
+        agent.send("doorstatus",{"door":DOOR2,"status":UNKNOWN_STATE});
+    }
 });
 
 door2Close <- Button(g2ClosedSwitch,DIGITAL_IN_PULLUP)
 .onPress(function() {
-    agent.send("doorstatus",{"door":DOOR2,"status":CLOSED_STATE});
+    imp.sleep(0.1)
+    if (g2ClosedSwitch.read() == 0) {
+        server.log(DOOR2+" changed to CLOSED");
+        agent.send("doorstatus",{"door":DOOR2,"status":CLOSED_STATE});
+    } else {
+        server.log(DOOR2+" CLOSED bounce");
+        agent.send("doorstatus",{"door":DOOR2,"status":UNKNOWN_STATE});
+    }
 })
 .onRelease(function() {
-    agent.send("doorstatus",{"door":DOOR2,"status":OPENING_STATE});
+    imp.sleep(0.1)
+    if (g2ClosedSwitch.read() == 1) {
+        server.log(DOOR2+" changed to OPENING");
+        agent.send("doorstatus",{"door":DOOR2,"status":OPENING_STATE});
+    } else {
+        server.log(DOOR2+" OPENING bounce");
+        agent.send("doorstatus",{"door":DOOR2,"status":UNKNOWN_STATE});
+    }
 });
+
 
 //--------------------------------------------------------------------------------------------------------
 // Handle calls from Agent to press one of the door buttons
